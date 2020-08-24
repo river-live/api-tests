@@ -1,0 +1,16 @@
+config:
+  target: "http://river-river-kgfubh1tacrn-954820589.us-east-1.elb.amazonaws.com/"
+  phases:
+    - duration: 10
+      arrivalRate: 1
+
+scenarios:
+  - name: "Clients join a room"
+    engine: "socketio"
+    flow:
+      - emit:
+          channel: "room-join"
+          data: "one"
+      - emit:
+          channel: "event"
+          data: '{"name": "Bob", "room": "one"}'

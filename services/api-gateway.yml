@@ -1,0 +1,21 @@
+config:
+  target: "https://kpzl3u0c8b.execute-api.us-east-1.amazonaws.com"
+  plugins:
+    expect: {}
+  phases:
+    - duration: 60
+      arrivalRate: 10
+  defaults:
+    headers:
+      x-api-key: "d455fa5ac602e63af9b4718aa2b1e7a1"
+scenarios:
+  - name: "Authenticate with valid credentials and publish through post requests"
+    flow:
+      - post:
+          url: "/publish"
+          json:
+            channel: "todos"
+            eventName: "add-task"
+            data: "testing"
+          expect:
+            - statusCode: 200
