@@ -1,8 +1,9 @@
 config:
-  target: "http://river-river-kgfubh1tacrn-954820589.us-east-1.elb.amazonaws.com/"
+  target: "http://river-river-ELGJ26U092IB-73907299.us-east-1.elb.amazonaws.com"
   phases:
-    - duration: 10
-      arrivalRate: 1
+    - duration: 200
+      arrivalRate: 100
+      name: "high load"
 
 scenarios:
   - name: "Clients join a room"
@@ -11,6 +12,7 @@ scenarios:
       - emit:
           channel: "room-join"
           data: "one"
+      - think: 600
       - emit:
-          channel: "event"
-          data: '{"name": "Bob", "room": "one"}'
+          channel: "room-join"
+          data: "two"
