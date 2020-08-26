@@ -1,8 +1,8 @@
 config:
-  target: "http://river-river-kgfubh1tacrn-954820589.us-east-1.elb.amazonaws.com/"
+  target: "your river load balancer url"
   phases:
-    - duration: 10
-      arrivalRate: 1
+    - duration: 200
+      arrivalRate: 50
 
 scenarios:
   - name: "Clients join a room"
@@ -11,6 +11,7 @@ scenarios:
       - emit:
           channel: "room-join"
           data: "one"
+      - think: 600
       - emit:
-          channel: "event"
-          data: '{"name": "Bob", "room": "one"}'
+        channel: "room-join"
+        data: "two"
