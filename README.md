@@ -10,7 +10,7 @@ To load test the deployed River infrastructure on AWS, the following setup was u
 
 To simulate a significant load on our River infrastructure, we used these conditions:
 
-- adding 100 new users (connections) per second
+- add 100 new users (connections) per second, for a total of 20,000 users
 - upon connection, each new user:
   - subscribes to a channel
   - holds the connection for 10 minutes
