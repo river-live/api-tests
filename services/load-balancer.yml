@@ -4,7 +4,6 @@ config:
     - duration: 200
       arrivalRate: 100
       name: "high load"
-
 scenarios:
   - name: "Clients join a room"
     engine: "socketio"
