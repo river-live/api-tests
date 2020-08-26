@@ -36,7 +36,7 @@ River was able to handle this load without any errors.
 
 The server we used for testing River is identical to the final server, except to simulate a heavy load, it emits "presence" channel information. The code can be found [here](https://github.com/river-live/server/blob/demo/server.js) in our server repo under the `demo` branch.
 
-### ECS settings
+### ECS Service settings
 
 River was deployed with the following service definition:
 
@@ -47,6 +47,8 @@ memoryLimitMiB: 2048
 ```
 
 This gives two containers each one virtual cpu, and 2Gb of memory. Auto-scaling was not used during the test.
+
+### Tuning the Task Definition
 
 At first the test was resulting in a lot (3,000 out of 10,000) of XHR Polling errors once above a certain number of connections (7,000ish). This meant that the connections were dropping and the socket.io clients were falling back to polling, but the polling was failing.
 
