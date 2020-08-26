@@ -1,9 +1,9 @@
 config:
-  target: "your river load balancer url"
+  target: "http://river-river-ELGJ26U092IB-73907299.us-east-1.elb.amazonaws.com"
   phases:
     - duration: 200
-      arrivalRate: 50
-
+      arrivalRate: 100
+      name: "high load"
 scenarios:
   - name: "Clients join a room"
     engine: "socketio"
@@ -13,5 +13,5 @@ scenarios:
           data: "one"
       - think: 600
       - emit:
-        channel: "room-join"
-        data: "two"
+          channel: "room-join"
+          data: "two"
