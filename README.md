@@ -4,7 +4,7 @@ To load test the deployed River infrastructure on AWS, we used the following set
 
 - two c5.large EC2 instances
 - the artillery.io testing framework
-- the "demo" server (in our server repo under the `demo` branch)
+- the "demo" server
 
 ## Overview
 
@@ -26,11 +26,49 @@ As the number of connections grew, the rate of connections slowed to more like 1
 - ... etc.
 - connection 20000 results in 19999 messages being sent.
 
-Which means in the last second the server sent about 300,000 messages.
+Which means towards the final stages of making all the connections, the server was sending about 300,000 messages per second.
 
 River was able to handle this load without any errors.
 
 ![Load Test](images/load-test.png)
+
+## River setup
+
+The server we used for testing River is identical to the final server, except to simulate a heavy load, it emits "presence" channel information. The code can be found [here](https://github.com/river-live/server/blob/demo/server.js) in our server repo under the `demo` branch.
+
+### ECS settings
+
+River was deployed with the following service definition:
+
+```
+cpu: 1024,
+desiredCount: 2,
+memoryLimitMiB: 2048
+```
+
+This gives both containers one virtual cpu, and 2Gb of memory. Auto-scaling was not used during the test.
+
+At first the test was resulting in a lot (3,000 out of 10,000) of XHR Polling errors once above a certain number of connections (7,000ish). This meant that the connections were dropping and socket.io was falling back to polling, but the polling was failing.
+
+To remedy this, the `ulimits` of the container were increased, allowing more open files, since each new connection results in a new file being opened. ECS gives a soft limit default of `1024` and a hard limit default of `4096`, so it makes sense that we were seing connection errors as we closed in on 7,000 connections (with two tasks (containers) running).
+
+`ulimits` were increased to this:
+
+```
+"ulimits": [
+                {
+                    "name": "nofile",
+                    "softLimit": 50000,
+                    "hardLimit": 65536
+                }
+            ],
+```
+
+The hard limit of `65536` represents the number of possible ports on a container.
+
+Once this was updated, the test ran without any errors.
+
+## Artillery.io setup
 
 ## EC2 setup
 
