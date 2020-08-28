@@ -1,5 +1,5 @@
 config:
-  target: "http://river-river-ELGJ26U092IB-73907299.us-east-1.elb.amazonaws.com"
+  target: "http://river-river-a9gbrkugy0c4-1861874721.us-east-1.elb.amazonaws.com/"
   phases:
     - duration: 200
       arrivalRate: 100
@@ -12,7 +12,7 @@ scenarios:
       - emit:
           channel: "room-join"
           data: "one"
-      - think: 600
+      - think: 120
       - emit:
           channel: "room-join"
           data: "two"
